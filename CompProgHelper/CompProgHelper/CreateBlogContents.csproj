@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DC503676-4140-4748-872F-4C1695288A13}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>CreateBlogContents</RootNamespace>
+    <AssemblyName>CreateBlogContents</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>CreateBlogContents.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AngleSharp, Version=0.11.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\packages\AngleSharp.0.11.0\lib\net46\AngleSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero2" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.4.5.0\lib\net46\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="APIConnection.cs" />
+    <Compile Include="BlogTemplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BlogTemplate.Designer.cs">
+      <DependentUpon>BlogTemplate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommonClass.cs" />
+    <Compile Include="CommonColor.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultIO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ResultIO.Designer.cs">
+      <DependentUpon>ResultIO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestResult.Designer.cs">
+      <DependentUpon>TestResult.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="BlogTemplate.resx">
+      <DependentUpon>BlogTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="ResultIO.resx">
+      <DependentUpon>ResultIO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestResult.resx">
+      <DependentUpon>TestResult.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\DataGridExtensions.Behaviors.BeginEditOnCtrlEnterBehavior.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.Behaviors.ClearTextBoxOnButtonClickBehavior.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.Behaviors.DisableTargetWhileEditingBehavior.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.Behaviors.ExtendedStarSizeBehavior.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.ColumnStyles.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.DataGridColumnStyle.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.DataGridColumnStyleCollection.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.DataGridFilter.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.DataGridFilterColumn.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.DataGridFilterColumnControl.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.DataGridFilterHost.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.DataGridFilteringEventArgs.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.ExtensionMethods.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.Framework.DispatcherThrottle.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.IContentFilter.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.IContentFilterFactory.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.IDataGridEventsProvider.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.IResourceLocator.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.RegexContentFilter.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.RegexContentFilterFactory.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.SimpleContentFilter.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.SimpleContentFilterFactory.datasource" />
+    <None Include="Properties\DataSources\DataGridExtensions.Tools.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ContentsTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
