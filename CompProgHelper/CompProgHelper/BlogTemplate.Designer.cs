@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnExecTest = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtNo = new System.Windows.Forms.TextBox();
@@ -38,6 +38,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.txtContents = new System.Windows.Forms.TextBox();
+            this.bntExecSample = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -46,7 +47,8 @@
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.bntExecSample);
+            this.panel2.Controls.Add(this.btnExecTest);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.txtNo);
@@ -57,15 +59,15 @@
             this.panel2.Size = new System.Drawing.Size(624, 96);
             this.panel2.TabIndex = 13;
             // 
-            // button1
+            // btnExecTest
             // 
-            this.button1.Location = new System.Drawing.Point(520, 17);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(91, 36);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "テスト";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnExecTest.Location = new System.Drawing.Point(520, 17);
+            this.btnExecTest.Name = "btnExecTest";
+            this.btnExecTest.Size = new System.Drawing.Size(91, 36);
+            this.btnExecTest.TabIndex = 11;
+            this.btnExecTest.Text = "テスト";
+            this.btnExecTest.UseVisualStyleBackColor = true;
+            this.btnExecTest.Click += new System.EventHandler(this.button1_Click);
             // 
             // label2
             // 
@@ -151,6 +153,16 @@
             this.txtContents.Size = new System.Drawing.Size(597, 179);
             this.txtContents.TabIndex = 4;
             // 
+            // bntExecSample
+            // 
+            this.bntExecSample.Location = new System.Drawing.Point(423, 18);
+            this.bntExecSample.Name = "bntExecSample";
+            this.bntExecSample.Size = new System.Drawing.Size(91, 35);
+            this.bntExecSample.TabIndex = 12;
+            this.bntExecSample.Text = "サンプルテスト";
+            this.bntExecSample.UseVisualStyleBackColor = true;
+            this.bntExecSample.Click += new System.EventHandler(this.bntExecSample_Click);
+            // 
             // BlogTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -180,7 +192,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtContents;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnExecTest;
+        private System.Windows.Forms.Button bntExecSample;
     }
 }
 

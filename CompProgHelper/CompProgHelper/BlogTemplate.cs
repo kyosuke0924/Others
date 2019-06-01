@@ -96,7 +96,15 @@ namespace CreateBlogContents
         {
             if (txtNo.Text == string.Empty) return;
 
-            Form form = new TestResult(probrem);
+            Form form = new TestResult(probrem, false);
+            form.ShowDialog();
+        }
+
+        private void bntExecSample_Click(object sender, EventArgs e)
+        {
+            if (txtNo.Text == string.Empty) return;
+
+            Form form = new TestResult(probrem,true);
             form.ShowDialog();
         }
 

@@ -368,6 +368,7 @@
             this.MaximizeBox = false;
             this.Name = "TestResult";
             this.Text = "テスト結果";
+            this.Load += new System.EventHandler(this.TestResult_Load);
             this.Shown += new System.EventHandler(this.TestResult_ShownAsync);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

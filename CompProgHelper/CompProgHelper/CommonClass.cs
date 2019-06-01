@@ -25,9 +25,9 @@ namespace CreateBlogContents
         public string html { get; set; }
     }
 
-    public class TestcaseHeaders
+    public class TestcaseHeader
     {
-        public class TestcaseHeader
+        public class Info
         {
             public int Serial { get; set; }
             public string Name { get; set; }
@@ -36,18 +36,24 @@ namespace CreateBlogContents
             public int Score { get; set; }
         }
         public string ProblemId { get; set; }
-        public TestcaseHeader[] Headers { get; set; }
+        public Info[] Headers { get; set; }
     }
 
     public class Testcase
     {
-        public int ID { get; set; }
         public string ProblemId { get; set; }
         public int Serial { get; set; }
         public string @In { get; set; }
         public string @Out { get; set; }
     }
 
+    public class Sample
+    {
+        public string ProblemId { get; set; }
+        public int Serial { get; set; }
+        public string @In { get; set; }
+        public string @Out { get; set; }
+    }
 
 
 

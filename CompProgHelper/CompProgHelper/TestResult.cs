@@ -19,38 +19,29 @@ namespace CreateBlogContents
 {
     public partial class TestResult : Form
     {
-        public TestResult(Probrem probrem)
+        public TestResult(Probrem probrem, bool isSample)
         {
             this.probrem = probrem;
+            this.isSample = isSample;
             InitializeComponent();
         }
 
         #region Field
 
+        private bool isSample;
         private Probrem probrem;
-        private TestcaseHeaders testcaseHeaders;
+        private TestcaseHeader testcaseHeader;
         private Testcase[] testcases;
+        private Sample[] samples;
         private Result[] results;
 
         private const string FIND_BY_PROBLEM_ID_TESTCASE_HEADER = "https://judgedat.u-aizu.ac.jp/testcases/{0}/header";
         private const string FIND_BY_PROBLEM_ID_TESTCASE = "https://judgedat.u-aizu.ac.jp/testcases/{0}/{1}";
         private const string FIND_BY_PROBLEM_ID_TESTCASE_ALT = "https://judgedat.u-aizu.ac.jp/testcases/{0}/{1}/in";
+        private const string FIND_BY_PROBLEM_ID_SAMPLES = "https://judgedat.u-aizu.ac.jp/testcases/samples/{0}";
+        private const string TEST_TARGET_FILENAME = "test.exe";
 
-        string[] dlls = new string[]
-                            {
-                                 "Microsoft.CSharp.dll"
-                                ,"System.dll"
-                                ,"System.Core.dll"
-                                ,"System.Data.dll"
-                                ,"System.Data.DataSetExtensions.dll"
-                                ,"System.Xml.dll"
-                                ,"System.Xml.Linq.dll"
-                            };
-
-        Process process;
-
-
-        enum DgvResultRow
+        private enum DgvResultRow
         {
             Result,
             JudgeCnt,
@@ -58,7 +49,7 @@ namespace CreateBlogContents
             UsedMemory,
         }
 
-        enum DgvDetailRow
+        private enum DgvDetailRow
         {
             No,
             Detail,
@@ -79,36 +70,25 @@ namespace CreateBlogContents
             return ci.IndexOf(source, toCheck, co) != -1;
         }
 
+        private void TestResult_Load(object sender, EventArgs e)
+        {
+            testcaseHeader = new TestcaseHeader();
+        }
+
         private async void TestResult_ShownAsync(object sender, EventArgs e)
         {
-            txtNo.Text = probrem.id;
-            txtTimeLimit.Text = probrem.problemtimelimit.ToString();
-            txtMemoryLimit.Text = probrem.problemmemorylimit.ToString();
+            //初期化
+            InitForm();
 
-            dgvResult.Rows.Clear();
-            dgvDetail.Rows.Clear();
-
-            dgvResult.Rows.Add();
-            dgvResult.CurrentCell = null;
-
-            testcaseHeaders = await HttpClientManager.ExecuteGetJsonAsync<TestcaseHeaders>(string.Format(FIND_BY_PROBLEM_ID_TESTCASE_HEADER, probrem.id));
-            testcases = new Testcase[testcaseHeaders.Headers.Length];
-            results = new Result[testcaseHeaders.Headers.Length];
-            for (int i = 0; i < testcaseHeaders.Headers.Length; i++)
-            {
-                dgvDetail.Rows.Add();
-                dgvDetail.Rows[i].Cells[(int)DgvDetailRow.No].Value = testcaseHeaders.Headers[i].Serial;
-                dgvDetail.Rows[i].Cells[(int)DgvDetailRow.Detail].Value = "";
-                dgvDetail.Rows[i].Cells[(int)DgvDetailRow.InputSize].Value = testcaseHeaders.Headers[i].InputSize + " B";
-                dgvDetail.Rows[i].Cells[(int)DgvDetailRow.OutputSize].Value = testcaseHeaders.Headers[i].OutputSize + " B";
-                dgvDetail.Rows[i].Cells[(int)DgvDetailRow.SampleName].Value = testcaseHeaders.Headers[i].Name;
-            }
-            dgvDetail.CurrentCell = null;
+            //ヘッダー情報取得
+            testcaseHeader = await GetTestcaseHeaderAsync();
+            PrintTestCaseHeader(testcaseHeader);
+            results = new Result[testcaseHeader.Headers.Length];
 
             //コンパイル
             if (!CompileTarget()) return;
 
-            var startInfo = new ProcessStartInfo("test.exe")
+            var startInfo = new ProcessStartInfo(TEST_TARGET_FILENAME)
             {
                 WorkingDirectory = Environment.CurrentDirectory,
                 RedirectStandardInput = true,
@@ -118,9 +98,10 @@ namespace CreateBlogContents
                 CreateNoWindow = true,
             };
 
-            for (int i = 0; i < testcaseHeaders.Headers.Length; i++)
+            testcases = new Testcase[testcaseHeader.Headers.Length];
+            for (int i = 0; i < testcaseHeader.Headers.Length; i++)
             {
-                testcases[i] = await GetTestcaseAsync(testcaseHeaders.Headers[i].Serial);
+                testcases[i] = await GetTestcaseAsync(i, testcaseHeader.Headers[i].Serial);
                 results[i] = ExecTest(startInfo, testcases[i]);
                 PrintDgvDetail(i, results[i]);
                 if (results[i].Status != "AC") break;
@@ -131,11 +112,76 @@ namespace CreateBlogContents
 
         }
 
+        private void InitForm()
+        {
+            txtNo.Text = probrem.id;
+            txtTimeLimit.Text = probrem.problemtimelimit.ToString();
+            txtMemoryLimit.Text = probrem.problemmemorylimit.ToString();
+
+            dgvResult.Rows.Clear();
+            dgvDetail.Rows.Clear();
+
+            dgvResult.Rows.Add();
+            dgvResult.CurrentCell = null;
+        }
+
+        private async Task<TestcaseHeader> GetTestcaseHeaderAsync()
+        {
+            if (isSample)
+            {
+                samples = await HttpClientManager.ExecuteGetJsonAsync<Sample[]>(string.Format(FIND_BY_PROBLEM_ID_SAMPLES, probrem.id));
+                return ConvertSamplesToTestcaseHeader();
+            }
+            else
+            {
+                return await HttpClientManager.ExecuteGetJsonAsync<TestcaseHeader>(string.Format(FIND_BY_PROBLEM_ID_TESTCASE_HEADER, probrem.id));
+            }
+        }
+
+        private TestcaseHeader ConvertSamplesToTestcaseHeader()
+        {
+            TestcaseHeader tmp = new TestcaseHeader
+            {
+                ProblemId = samples[0].ProblemId,
+                Headers = new TestcaseHeader.Info[samples.Length]
+            };
+            for (int i = 0; i < samples.Length; i++)
+            {
+                tmp.Headers[i] = new TestcaseHeader.Info
+                {
+                    Serial = samples[i].Serial,
+                    Name = string.Format("samples_{0}", samples[i].Serial.ToString("00")),
+                    InputSize = Encoding.GetEncoding("Shift_JIS").GetByteCount(samples[i].In),
+                    OutputSize = Encoding.GetEncoding("Shift_JIS").GetByteCount(samples[i].Out),
+                    Score = -1
+                };
+            }
+            return tmp;
+        }
+
+        private void PrintTestCaseHeader(TestcaseHeader testcaseHeader)
+        {
+            for (int i = 0; i < testcaseHeader.Headers.Length; i++)
+            {
+                dgvDetail.Rows.Add();
+                dgvDetail.Rows[i].Cells[(int)DgvDetailRow.No].Value = testcaseHeader.Headers[i].Serial;
+                dgvDetail.Rows[i].Cells[(int)DgvDetailRow.Detail].Value = "";
+                dgvDetail.Rows[i].Cells[(int)DgvDetailRow.InputSize].Value = testcaseHeader.Headers[i].InputSize + " B";
+                dgvDetail.Rows[i].Cells[(int)DgvDetailRow.OutputSize].Value = testcaseHeader.Headers[i].OutputSize + " B";
+                dgvDetail.Rows[i].Cells[(int)DgvDetailRow.SampleName].Value = testcaseHeader.Headers[i].Name;
+            }
+            dgvDetail.CurrentCell = null;
+        }
+
         private bool CompileTarget()
         {
+
+            string[] dlls = new string[]
+            {  "Microsoft.CSharp.dll","System.dll","System.Core.dll" ,"System.Data.dll" ,"System.Data.DataSetExtensions.dll","System.Xml.dll","System.Xml.Linq.dll"};
+
             CSharpCodeProvider provider = new CSharpCodeProvider();
             CompilerParameters parameters = new CompilerParameters(dlls);
-            parameters.OutputAssembly = "test.exe";
+            parameters.OutputAssembly = TEST_TARGET_FILENAME;
             parameters.GenerateExecutable = true;
 
             string source = "";
@@ -153,13 +199,23 @@ namespace CreateBlogContents
             return true;
         }
 
-        private async Task<Testcase> GetTestcaseAsync(int serial)
+        private async Task<Testcase> GetTestcaseAsync(int i, int serial)
         {
             Testcase testcase = new Testcase();
-            testcase = await HttpClientManager.ExecuteGetJsonAsync<Testcase>(string.Format(FIND_BY_PROBLEM_ID_TESTCASE, probrem.id, serial));
-            if (testcase.In.Contains("(terminated because of the limitation)"))
+            if (isSample)
             {
-                testcase.In = await HttpClientManager.ExecuteGetStringAsync(string.Format(FIND_BY_PROBLEM_ID_TESTCASE_ALT, probrem.id, serial));
+                testcase.Serial = samples[i].Serial;
+                testcase.ProblemId = samples[i].ProblemId;
+                testcase.In = samples[i].In;
+                testcase.Out = samples[i].Out;
+            }
+            else
+            {
+                testcase = await HttpClientManager.ExecuteGetJsonAsync<Testcase>(string.Format(FIND_BY_PROBLEM_ID_TESTCASE, probrem.id, serial));
+                if (testcase.In.Contains("(terminated because of the limitation)"))
+                {
+                    testcase.In = await HttpClientManager.ExecuteGetStringAsync(string.Format(FIND_BY_PROBLEM_ID_TESTCASE_ALT, probrem.id, serial));
+                }
             }
             return testcase;
         }
@@ -167,29 +223,34 @@ namespace CreateBlogContents
         private Result ExecTest(ProcessStartInfo startInfo, Testcase testcase)
         {
             var result = new Result();
-            var timeout = TimeSpan.FromSeconds(probrem.problemtimelimit * 2);
+            var timeout = TimeSpan.FromSeconds(probrem.problemtimelimit * 4);
 
             bool isTimedOut = false;
             bool isMemoryExceeded = false;
+            bool isError = false;
             long memory = 0;
             TimeSpan time = new TimeSpan();
 
             var stdout = new StringBuilder();
             var stderr = new StringBuilder();
-
-            using (process = Process.Start(startInfo))
+            string text = testcase.In.Replace("\n", "\r\n");
+            //string[] text = testcase.In.Replace("\n", "\r\n").Split(new string[] { "\r\n" }, StringSplitOptions.None);
+            using (Process process = Process.Start(startInfo))
             {
                 process.OutputDataReceived += (ss, ee) => { if (ee.Data != null) { stdout.AppendLine(ee.Data); } }; // 標準出力に書き込まれた文字列を取り出す
                 process.ErrorDataReceived += (ss, ee) => { if (ee.Data != null) { stderr.AppendLine(ee.Data); } }; // 標準エラー出力に書き込まれた文字列を取り出す
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
-                process.StandardInput.WriteLine(testcase.In.Replace("\n", "\r\n"));
-                do
+                //process.StandardInput.WriteLine(text); タイムアウトする処理の場合、受け側で読み込みが開始せず遅延するため、非同期処理に変更
+                process.StandardInput.WriteLineAsync(text);
+                DateTime startTime = DateTime.Now;
+
+                do //プロセスが終了するまで監視
                 {
                     try
                     {
                         process.Refresh();
-                        time = DateTime.Now - process.StartTime;
+                        time = DateTime.Now - startTime;
                         memory = Math.Max(memory, process.PeakWorkingSet64);
                     }
                     catch (InvalidOperationException)
@@ -197,17 +258,25 @@ namespace CreateBlogContents
                     catch (ArgumentException)
                     { } //プロセスが開かれていない場合も、何もしない
 
+                    if (!string.IsNullOrEmpty(stderr.ToString()))
+                    {
+                        isError = true;
+                        process.WaitForExit();
+                    }
+
                     if (memory > probrem.problemmemorylimit * 1024) isMemoryExceeded = true;
                     if (time.TotalMilliseconds > timeout.TotalMilliseconds) isTimedOut = true;
-
                     if (isMemoryExceeded || isTimedOut)
                     {
                         try
                         {
                             process.Kill();
+                            process.WaitForExit();
                         }
                         catch (Win32Exception)
                         { } //プロセスが終了中の場合、何もしない
+                        catch (InvalidOperationException)
+                        { } //プロセスが終了している場合、何もしない
                     }
 
                 } while (!process.HasExited);
@@ -220,6 +289,8 @@ namespace CreateBlogContents
                 result.UsedMemory = memory;
             }
 
+            var resultString = stdout.ToString();
+            result.Output = resultString;
             string res;
             if (isMemoryExceeded || isTimedOut)
             {
@@ -228,16 +299,13 @@ namespace CreateBlogContents
             }
             else
             {
-                var errString = stderr.ToString();
-                if (!string.IsNullOrEmpty(errString))
+                if (isError)
                 {
                     res = "RE";
-                    txtError.Text = errString;
+                    txtError.Text = stderr.ToString();
                 }
                 else
                 {
-                    var resultString = stdout.ToString();
-                    result.Output = resultString;
                     if (resultString == testcase.Out.Replace("\n", "\r\n"))//改行の統一
                     {
                         res = "AC";
@@ -282,11 +350,11 @@ namespace CreateBlogContents
             dgvResult.Rows[0].Cells[(int)DgvResultRow.Result].Value = status;
             foreach (DataGridViewCell item in dgvResult.Rows[0].Cells)
             {
-                item.Style.BackColor = status == "AC" ? CommonColor.OK_BKG : CommonColor.NG_FRT;
+                item.Style.BackColor = status == "AC" ? CommonColor.OK_BKG : CommonColor.NG_BKG;
                 item.Style.ForeColor = status == "AC" ? CommonColor.OK_FRT : CommonColor.NG_FRT;
             }
 
-            dgvResult.Rows[0].Cells[(int)DgvResultRow.JudgeCnt].Value = cnt + " / " + testcaseHeaders.Headers.Count();
+            dgvResult.Rows[0].Cells[(int)DgvResultRow.JudgeCnt].Value = cnt + " / " + testcaseHeader.Headers.Count();
             dgvResult.Rows[0].Cells[(int)DgvResultRow.ProcessTime].Value = maxProcessingTime + " Sec";
             dgvResult.Rows[0].Cells[(int)DgvResultRow.UsedMemory].Value = maxUsedMemory + " KB";
         }

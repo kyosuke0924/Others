@@ -18,7 +18,7 @@ namespace CreateBlogContents
         {
             InitializeComponent();
             this.input = input.Replace("\n", Environment.NewLine).Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            this.output = output.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            this.output = output is null ? new string[] { "" } : output.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             this.expected = expected.Replace("\n", Environment.NewLine).Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
             //データグリッドビューのデリゲート
@@ -67,9 +67,9 @@ namespace CreateBlogContents
                 if (i < output.Length) dgvOutput.Rows[i].Cells[0].Value = output[i];
                 if (i < expected.Length) dgvOutput.Rows[i].Cells[1].Value = expected[i];
 
-                if (output[i] != expected[i])
+                if (i >= output.Length || i >= expected.Length || output[i] != expected[i])
                 {
-                    foreach (DataGridViewCell item in dgvOutput.Rows[i].Cells) item.Style.BackColor = Color.LightSalmon;
+                    foreach (DataGridViewCell item in dgvOutput.Rows[i].Cells) item.Style.BackColor = CommonColor.NG_BKG;
                 }
 
                 dgvOutput.Rows[i].HeaderCell.Value = (i + 1).ToString();
