@@ -48,16 +48,20 @@ namespace CreateBlogContents
 
         private void ResultIO_Shown(object sender, EventArgs e)
         {
-
+            DataGridViewRow[] list = new DataGridViewRow[input.Length];
             for (int i = 0; i < input.Length; i++)
             {
-                dgvInput.Rows.Add(input[i]);
-                dgvInput.Rows[i].HeaderCell.Value = (i + 1).ToString();
-                dgvInput.Rows[i].HeaderCell.Style.BackColor = SystemColors.Control;
-                dgvInput.Rows[i].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                DataGridViewRow row = new DataGridViewRow();
+                row.CreateCells(dgvInput, input[i]);
+                row.HeaderCell.Value = (i + 1).ToString();
+                row.HeaderCell.Style.BackColor = SystemColors.Control;
+                row.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                row.Height = 18;
+                list[i] = row;
             }
+            dgvInput.Rows.AddRange(list);
 
-            dgvInput.RowHeadersWidth = dgvInput.Rows[input.Length - 1].HeaderCell.ContentBounds.Width + 20;
+            dgvInput.RowHeadersWidth = dgvInput.Rows[input.Length - 1].HeaderCell.ContentBounds.Width + 40;
             dgvInput.Columns[0].Width = Math.Min(MAX_COL_LEN, dgvInput.Columns[0].GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, true)) + 50;
 
             int maxRow = Math.Max(output.Length, expected.Length);
@@ -77,7 +81,7 @@ namespace CreateBlogContents
                 dgvOutput.Rows[i].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
 
-            dgvOutput.RowHeadersWidth = dgvOutput.Rows[maxRow - 1].HeaderCell.ContentBounds.Width + 20;
+            dgvOutput.RowHeadersWidth = dgvOutput.Rows[maxRow - 1].HeaderCell.ContentBounds.Width + 40;
             dgvOutput.Columns[0].Width = Math.Min(MAX_COL_LEN, dgvOutput.Columns[0].GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, true)) + 50;
             dgvOutput.Columns[1].Width = Math.Min(MAX_COL_LEN, dgvOutput.Columns[1].GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, true)) + 50;
         }
@@ -172,5 +176,6 @@ namespace CreateBlogContents
         {
             if (e.Column.Width > MAX_COL_LEN) e.Column.Width = MAX_COL_LEN;
         }
+
     }
 }

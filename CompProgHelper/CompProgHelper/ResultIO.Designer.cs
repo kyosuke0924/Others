@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.dgvInput = new System.Windows.Forms.DataGridView();
             this.cInput = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,7 +64,7 @@
             this.dgvInput.Margin = new System.Windows.Forms.Padding(0);
             this.dgvInput.Name = "dgvInput";
             this.dgvInput.ReadOnly = true;
-            this.dgvInput.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvInput.RowHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvInput.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvInput.RowTemplate.Height = 18;
             this.dgvInput.Size = new System.Drawing.Size(250, 413);
@@ -103,7 +103,7 @@
             this.dgvOutput.Margin = new System.Windows.Forms.Padding(0);
             this.dgvOutput.Name = "dgvOutput";
             this.dgvOutput.ReadOnly = true;
-            this.dgvOutput.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvOutput.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvOutput.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvOutput.RowTemplate.Height = 18;
             this.dgvOutput.Size = new System.Drawing.Size(508, 413);
