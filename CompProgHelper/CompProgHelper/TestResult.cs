@@ -37,7 +37,8 @@ namespace CreateBlogContents
 
         private const string FIND_BY_PROBLEM_ID_TESTCASE_HEADER = "https://judgedat.u-aizu.ac.jp/testcases/{0}/header";
         private const string FIND_BY_PROBLEM_ID_TESTCASE = "https://judgedat.u-aizu.ac.jp/testcases/{0}/{1}";
-        private const string FIND_BY_PROBLEM_ID_TESTCASE_ALT = "https://judgedat.u-aizu.ac.jp/testcases/{0}/{1}/in";
+        private const string FIND_BY_PROBLEM_ID_TESTCASE_ALT_IN = "https://judgedat.u-aizu.ac.jp/testcases/{0}/{1}/in";
+        private const string FIND_BY_PROBLEM_ID_TESTCASE_ALT_OUT = "https://judgedat.u-aizu.ac.jp/testcases/{0}/{1}/out";
         private const string FIND_BY_PROBLEM_ID_SAMPLES = "https://judgedat.u-aizu.ac.jp/testcases/samples/{0}";
         private const string TEST_TARGET_FILENAME = "test.exe";
 
@@ -214,7 +215,11 @@ namespace CreateBlogContents
                 testcase = await HttpClientManager.ExecuteGetJsonAsync<Testcase>(string.Format(FIND_BY_PROBLEM_ID_TESTCASE, probrem.id, serial));
                 if (testcase.In.Contains("(terminated because of the limitation)"))
                 {
-                    testcase.In = await HttpClientManager.ExecuteGetStringAsync(string.Format(FIND_BY_PROBLEM_ID_TESTCASE_ALT, probrem.id, serial));
+                    testcase.In = await HttpClientManager.ExecuteGetStringAsync(string.Format(FIND_BY_PROBLEM_ID_TESTCASE_ALT_IN, probrem.id, serial));
+                }
+                if (testcase.Out.Contains("(terminated because of the limitation)"))
+                {
+                    testcase.Out = await HttpClientManager.ExecuteGetStringAsync(string.Format(FIND_BY_PROBLEM_ID_TESTCASE_ALT_OUT, probrem.id, serial));
                 }
             }
             return testcase;
