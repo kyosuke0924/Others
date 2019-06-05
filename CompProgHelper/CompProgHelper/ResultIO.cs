@@ -48,7 +48,7 @@ namespace CreateBlogContents
 
         private void ResultIO_Shown(object sender, EventArgs e)
         {
-            DataGridViewRow[] list = new DataGridViewRow[input.Length];
+            DataGridViewRow[] rowsInput = new DataGridViewRow[input.Length];
             for (int i = 0; i < input.Length; i++)
             {
                 DataGridViewRow row = new DataGridViewRow();
@@ -57,29 +57,34 @@ namespace CreateBlogContents
                 row.HeaderCell.Style.BackColor = SystemColors.Control;
                 row.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 row.Height = 18;
-                list[i] = row;
+                rowsInput[i] = row;
             }
-            dgvInput.Rows.AddRange(list);
+            dgvInput.Rows.AddRange(rowsInput);
 
             dgvInput.RowHeadersWidth = dgvInput.Rows[input.Length - 1].HeaderCell.ContentBounds.Width + 40;
             dgvInput.Columns[0].Width = Math.Min(MAX_COL_LEN, dgvInput.Columns[0].GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, true)) + 50;
 
             int maxRow = Math.Max(output.Length, expected.Length);
+            DataGridViewRow[] rowsOutput = new DataGridViewRow[maxRow];
             for (int i = 0; i < maxRow; i++)
             {
-                dgvOutput.Rows.Add();
-                if (i < output.Length) dgvOutput.Rows[i].Cells[0].Value = output[i];
-                if (i < expected.Length) dgvOutput.Rows[i].Cells[1].Value = expected[i];
+                DataGridViewRow row = new DataGridViewRow();
+                row.CreateCells(dgvOutput);
+                if (i < output.Length) row.Cells[0].Value = output[i];
+                if (i < expected.Length) row.Cells[1].Value = expected[i];
 
                 if (i >= output.Length || i >= expected.Length || output[i] != expected[i])
                 {
-                    foreach (DataGridViewCell item in dgvOutput.Rows[i].Cells) item.Style.BackColor = CommonColor.NG_BKG;
+                    foreach (DataGridViewCell item in row.Cells) item.Style.BackColor = CommonColor.NG_BKG;
                 }
 
-                dgvOutput.Rows[i].HeaderCell.Value = (i + 1).ToString();
-                dgvOutput.Rows[i].HeaderCell.Style.BackColor = SystemColors.Control;
-                dgvOutput.Rows[i].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                row.HeaderCell.Value = (i + 1).ToString();
+                row.HeaderCell.Style.BackColor = SystemColors.Control;
+                row.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                row.Height = 18;
+                rowsOutput[i] = row;
             }
+            dgvOutput.Rows.AddRange(rowsOutput);
 
             dgvOutput.RowHeadersWidth = dgvOutput.Rows[maxRow - 1].HeaderCell.ContentBounds.Width + 40;
             dgvOutput.Columns[0].Width = Math.Min(MAX_COL_LEN, dgvOutput.Columns[0].GetPreferredWidth(DataGridViewAutoSizeColumnMode.AllCells, true)) + 50;
