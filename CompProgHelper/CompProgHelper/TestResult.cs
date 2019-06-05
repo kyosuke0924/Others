@@ -71,18 +71,24 @@ namespace CreateBlogContents
             return ci.IndexOf(source, toCheck, co) != -1;
         }
 
-        private void TestResult_Load(object sender, EventArgs e)
+        private void TestResult_ShownAsync(object sender, EventArgs e)
         {
-            testcaseHeader = new TestcaseHeader();
+            Execute();
         }
 
-        private async void TestResult_ShownAsync(object sender, EventArgs e)
+        private void btnReTest_Click(object sender, EventArgs e)
         {
+            Execute();
+        }
+
+        private async void Execute()
+        {
+
             //初期化
             InitForm();
 
-            //ヘッダー情報取得
-            testcaseHeader = await GetTestcaseHeaderAsync();
+            //ヘッダー情報取得 
+            if (testcaseHeader == null) testcaseHeader = await GetTestcaseHeaderAsync();
             PrintTestCaseHeader(testcaseHeader);
             results = new Result[testcaseHeader.Headers.Length];
 
@@ -128,6 +134,7 @@ namespace CreateBlogContents
 
         private async Task<TestcaseHeader> GetTestcaseHeaderAsync()
         {
+            testcaseHeader = new TestcaseHeader();
             if (isSample)
             {
                 samples = await HttpClientManager.ExecuteGetJsonAsync<Sample[]>(string.Format(FIND_BY_PROBLEM_ID_SAMPLES, probrem.id));

@@ -57,6 +57,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnReTest = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             this.panel2.SuspendLayout();
@@ -69,9 +70,9 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.dgvDetail);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 220);
+            this.panel1.Location = new System.Drawing.Point(0, 250);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(709, 253);
+            this.panel1.Size = new System.Drawing.Size(709, 229);
             this.panel1.TabIndex = 1;
             // 
             // label1
@@ -107,7 +108,7 @@
             this.dgvDetail.ReadOnly = true;
             this.dgvDetail.RowHeadersVisible = false;
             this.dgvDetail.RowTemplate.Height = 21;
-            this.dgvDetail.Size = new System.Drawing.Size(683, 223);
+            this.dgvDetail.Size = new System.Drawing.Size(683, 199);
             this.dgvDetail.TabIndex = 1;
             this.dgvDetail.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvDetail_CellContentClick);
             // 
@@ -187,7 +188,7 @@
             this.panel2.Controls.Add(this.dgvResult);
             this.panel2.Controls.Add(this.label8);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 32);
+            this.panel2.Location = new System.Drawing.Point(0, 62);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(709, 188);
             this.panel2.TabIndex = 4;
@@ -274,6 +275,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btnReTest);
             this.panel3.Controls.Add(this.label7);
             this.panel3.Controls.Add(this.label6);
             this.panel3.Controls.Add(this.txtMemoryLimit);
@@ -285,7 +287,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(709, 32);
+            this.panel3.Size = new System.Drawing.Size(709, 62);
             this.panel3.TabIndex = 5;
             // 
             // label7
@@ -357,18 +359,27 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "No.";
             // 
+            // btnReTest
+            // 
+            this.btnReTest.Location = new System.Drawing.Point(570, 9);
+            this.btnReTest.Name = "btnReTest";
+            this.btnReTest.Size = new System.Drawing.Size(127, 44);
+            this.btnReTest.TabIndex = 8;
+            this.btnReTest.Text = "再テスト";
+            this.btnReTest.UseVisualStyleBackColor = true;
+            this.btnReTest.Click += new System.EventHandler(this.btnReTest_Click);
+            // 
             // TestResult
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(709, 473);
+            this.ClientSize = new System.Drawing.Size(709, 479);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel3);
             this.MaximizeBox = false;
             this.Name = "TestResult";
             this.Text = "テスト結果";
-            this.Load += new System.EventHandler(this.TestResult_Load);
             this.Shown += new System.EventHandler(this.TestResult_ShownAsync);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -413,5 +424,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Input;
         private System.Windows.Forms.DataGridViewTextBoxColumn Output;
         private System.Windows.Forms.DataGridViewTextBoxColumn CaseName;
+        private System.Windows.Forms.Button btnReTest;
     }
 }
