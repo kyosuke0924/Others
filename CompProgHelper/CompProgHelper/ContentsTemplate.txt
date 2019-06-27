@@ -1,6 +1,8 @@
 ﻿<h5>【問題】</h5>
 <p><a href="https://onlinejudge.u-aizu.ac.jp/problems/{0}">https://onlinejudge.u-aizu.ac.jp/problems/{0}</a></p>
 <p><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id={0}">http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id={0}</a></p>
+<h5>【概要】</h5>
+<p>XXX</p>
 <h5>【解説】</h5>
 <p>XXX</p>
 <h5>【コード】</h5>

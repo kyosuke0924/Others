@@ -124,10 +124,11 @@ namespace CreateBlogContents
             txtNo.Text = probrem.id;
             txtTimeLimit.Text = probrem.problemtimelimit.ToString();
             txtMemoryLimit.Text = probrem.problemmemorylimit.ToString();
+            txtError.Clear();
 
             dgvResult.Rows.Clear();
             dgvDetail.Rows.Clear();
-
+            
             dgvResult.Rows.Add();
             dgvResult.CurrentCell = null;
         }
